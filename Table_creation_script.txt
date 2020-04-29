@@ -1,0 +1,161 @@
+Create Database arms;
+
+use arms;
+
+Create TABLE Tag (
+Tag_ID int NOT NULL,
+PRIMARY KEY (Tag_ID)
+);
+
+Create TABLE Department (
+    Dep_id int NOT NULL,
+    Dep_name varchar(255),
+    Dep_location varchar(255),
+    Head varchar(255),
+    PRIMARY KEY (Dep_id)
+) ;
+
+Create TABLE User (
+    User_id int NOT NULL,
+    username varchar(255),
+    Dep_id  int,
+    password varchar(255),
+    degree varchar(255),
+    major  varchar(255),
+    address varchar(255),
+    email varchar(255),
+    PRIMARY KEY (User_id),
+    FOREIGN KEY (Dep_id) REFERENCES Department(Dep_id)
+) ;
+
+
+
+CREATE TABLE Discussion_forum (
+Forum_ID int NOT NULL,
+Tag_id int,
+user_id int,
+Content  varchar(255), 
+Creation_date DATE, 
+FOREIGN KEY (Tag_id)  REFERENCES Tag(Tag_id) , 
+FOREIGN KEY (user_id)  REFERENCES User (User_id) , 
+PRIMARY KEY (Forum_ID)
+);
+
+
+Create TABLE Student (
+    S_User_id int NOT NULL,
+    Start_date DATE,
+    PRIMARY KEY (S_User_id)
+   ) ;
+
+Create TABLE Alumni (
+    A_User_id int NOT NULL,
+    Batch_Year varchar(255),
+    PRIMARY KEY (A_User_id)
+   ) ;
+
+Create TABLE Event (
+    E_Tag_ID int NOT NULL,
+    title varchar(255),
+    Dep_ID int,
+    Location varchar(255),
+    Date_time DATE,
+    PRIMARY KEY (E_Tag_ID),
+    FOREIGN KEY (Dep_ID) REFERENCES Department(Dep_ID)
+   ) ;
+
+
+Create TABLE Alumni_Meetup (
+    A_E_Tag_ID int NOT NULL,
+    Batch_Year varchar(255),
+   PRIMARY KEY (A_E_Tag_ID)
+   ) ;
+
+Create TABLE Career_Oriented (
+    C_E_Tag_ID int NOT NULL,
+    Topic varchar(255),
+  PRIMARY KEY (C_E_Tag_ID)
+   ) ;
+
+Create TABLE Company (
+    C_Tag_ID int NOT NULL,
+    Name varchar(255),
+  PRIMARY KEY (C_Tag_ID)
+   ) ;
+
+
+Create TABLE Job_posting (
+    J_Tag_ID int NOT NULL,
+    C_Tag_ID int,
+    A_User_ID int,
+    title varchar(255),
+    description varchar(255),
+    date DATE,
+    PRIMARY KEY (J_Tag_ID),
+    FOREIGN KEY (C_Tag_ID)  REFERENCES Company(C_Tag_ID) , 
+   FOREIGN KEY (A_User_ID)  REFERENCES Alumni(A_User_ID) 
+   ) ;
+
+
+
+Create TABLE Posting_Response (
+    J_Tag_ID int NOT NULL,
+    User_id int NOT NULL,
+    Title varchar(255),
+    description varchar(255),
+    posting_Date DATE,
+    FOREIGN KEY (J_Tag_ID)  REFERENCES Job_posting ( J_Tag_ID),
+    FOREIGN KEY (User_id)  REFERENCES User (User_id)
+   ) ;
+
+Create TABLE Company_Association (
+    A_User_id int,
+    C_Tag_ID int,
+    role varchar(255),
+    no_of_years int,
+    is_current boolean,
+    FOREIGN KEY (C_Tag_ID) REFERENCES Company (C_Tag_ID) , 
+   FOREIGN KEY (A_User_ID) REFERENCES Alumni (A_User_ID) 
+   ) ;
+
+Create TABLE Student_Attends (
+    S_User_id int,
+    C_E_Tag_ID int,
+    RSVP boolean,
+    FOREIGN KEY (C_E_Tag_ID) REFERENCES Career_Oriented(C_E_Tag_ID) , 
+    FOREIGN KEY (S_User_id) REFERENCES Student(S_User_id) 
+   ) ;
+
+Create TABLE Alumni_Guest (
+    A_User_id int,
+    C_E_Tag_ID int,
+    RSVP boolean,
+    FOREIGN KEY (A_User_id) REFERENCES Alumni (A_User_id) , 
+   FOREIGN KEY (C_E_Tag_ID) REFERENCES Career_Oriented (C_E_Tag_ID) 
+   ) ;
+
+Create TABLE Alumni_Participates (
+    A_User_id int,
+    A_E_Tag_ID int,
+    RSVP boolean,
+   FOREIGN KEY (A_User_id) REFERENCES Alumni (A_User_id) , 
+   FOREIGN KEY (A_E_Tag_ID) REFERENCES Alumni_meetup(A_E_Tag_ID) 
+   ) ;
+
+Create TABLE Forum_Response (
+    Forum_ID int NOT NULL,
+    User_ID int,
+    Description Varchar(255),
+    response_date DATE,
+    PRIMARY KEY(Forum_ID),
+    FOREIGN KEY (User_id) REFERENCES User(User_id) 
+    ) ;
+
+Create TABLE Referral_request (
+    Sender_User_ID int,
+   Receiver_User_ID int,
+    Description boolean,
+    response_date date,
+    FOREIGN KEY (Sender_User_ID) REFERENCES User(User_ID) , 
+   FOREIGN KEY (Receiver_User_ID) REFERENCES User(User_ID) 
+   ) ;
